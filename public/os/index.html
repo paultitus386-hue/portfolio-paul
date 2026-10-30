@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="author" content="Paul Titus.P" />
+  <meta name="description" content="PaulOS showcase for Paul Titus.P — web developer, BCA student, and AI-assisted developer." />
+  <title>PaulOS — Paul Titus.P | Portfolio</title>
+  <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+  <style>
+    :root {
+      --desktop: #3e9697;
+      --desktop-dark: #2c7475;
+      --window: #c0c0c0;
+      --window-light: #dfdfdf;
+      --window-dark: #808080;
+      --window-black: #000000;
+      --title-blue: #0000a3;
+      --title-blue-light: #1084d0;
+      --content: #ffffff;
+      --content-soft: #f7f7f7;
+      --content-hover: #e9e9e9;
+      --ink: #111111;
+      --muted: #555555;
+      --teal: #3e9697;
+      --teal-dark: #1e6a5f;
+      --red: #a80000;
+      --taskbar: #c3c6ca;
+      --serif: Georgia, 'Times New Roman', Times, serif;
+      --chrome: 'MS Sans Serif', Tahoma, Verdana, 'Segoe UI', sans-serif;
+      --mono: 'Courier New', Courier, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: var(--desktop);
+      color: var(--ink);
+      font-family: var(--chrome);
+    }
+
+    body {
+      -webkit-font-smoothing: none;
+      image-rendering: pixelated;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px dotted #ffffff;
+      outline-offset: 2px;
+    }
+
+    a {
+      color: var(--teal-dark);
+    }
+
+    a:hover {
+      color: var(--red);
+    }
+
+    img {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    .desktop {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: var(--desktop);
+    }
+
+    /* ---------- desktop shortcuts ---------- */
+    .desktop-icons {
+      position: absolute;
+      top: 12px;
+      left: 6px;
+      width: 66px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1;
+    }
+
+    .shortcut {
+      width: 66px;
+      min-height: 64px;
+      padding: 4px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: transparent;
+      border: 1px dashed transparent;
+      color: #ffffff;
+      font: 10.5px/1.15 var(--chrome);
+      text-align: center;
+      text-shadow: 1px 1px 0 #000000;
+      cursor: pointer;
+    }
+
+    .shortcut:hover,
+    .shortcut:focus-visible {
+      border-color: rgba(255, 255, 255, 0.85);
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    .shortcut:active {
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .shortcut svg {
+      width: 30px;
+      height: 30px;
+      display: block;
+      filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.45));
+    }
+
+    /* ---------- window chrome ---------- */
+    .window {
+      position: absolute;
+      top: 24px;
+      left: 56px;
+      right: 48px;
+      bottom: 52px;
+      min-width: 300px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      background: var(--window);
+      border: 2px solid;
+      border-color: var(--window-light) var(--window-black) var(--window-black) var(--window-light);
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.22);
+      z-index: 5;
+      animation: window-in 0.32s ease-out both;
+    }
+
+    .window.maximized {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 32px;
+      box-shadow: none;
+    }
+
+    .window.is-hidden {
+      display: none;
+    }
+
+    @keyframes window-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .titlebar {
+      height: 24px;
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 3px;
+      background: linear-gradient(90deg, var(--title-blue) 0%, var(--title-blue-light) 100%);
+      color: #ffffff;
+      font: bold 12px/1 var(--chrome);
+      cursor: default;
+      user-select: none;
+    }
+
+    .titlebar .win-icon {
+      width: 16px;
+      height: 16px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      background: var(--window);
+      color: var(--title-blue);
+      border: 1px solid #ffffff;
+      box-shadow: 1px 1px 0 #000000;
+      font: bold 8px/1 var(--chrome);
+      letter-spacing: 0;
+    }
+
+    .titlebar .title {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      letter-spacing: 0.2px;
+      text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 2px;
+      flex: none;
+    }
+
+    .win-btn {
+      width: 18px;
+      height: 16px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      background: var(--window);
+      color: #000000;
+      border: 1px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 var(--window-light), inset -1px -1px 0 var(--window-dark);
+      font: bold 10px/1 var(--chrome);
+      cursor: pointer;
+    }
+
+    .win-btn:active {
+      border-color: #000000 #ffffff #ffffff #000000;
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+    }
+
+    .win-btn.close {
+      font-size: 9px;
+    }
+
+    .window-body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+    }
+
+    /* ---------- sidebar ---------- */
+    .sidebar {
+      width: 232px;
+      flex: none;
+      padding: 18px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      background: var(--window);
+      border-right: 1px solid var(--window-dark);
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      background: var(--content);
+      color: var(--teal-dark);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+      font: bold 22px/1 var(--serif);
+      letter-spacing: 0.5px;
+    }
+
+    .brand h1 {
+      margin: 2px 0 0;
+      font: 600 24px/1 var(--serif);
+      letter-spacing: 0.3px;
+      color: var(--ink);
+    }
+
+    .brand p {
+      margin: 0;
+      font: 10px/1.3 var(--chrome);
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #4d4d4d;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 20px;
+    }
+
+    .nav-link {
+      width: 100%;
+      padding: 6px 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--ink);
+      font: 11px/1.2 var(--chrome);
+      letter-spacing: 1.7px;
+      text-align: left;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      background: var(--title-blue);
+      color: #ffffff;
+    }
+
+    .nav-link.active {
+      background: var(--title-blue);
+      color: #ffffff;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--window-dark);
+      font: 10px/1.55 var(--chrome);
+      color: #333333;
+    }
+
+    .sidebar-footer p {
+      margin: 0 0 8px;
+    }
+
+    .sidebar-footer p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ---------- page area ---------- */
+    .page-area {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--content);
+      scroll-behavior: smooth;
+    }
+
+    .page-area::-webkit-scrollbar {
+      width: 16px;
+      background: var(--content-hover);
+    }
+
+    .page-area::-webkit-scrollbar-thumb {
+      background: var(--window);
+      border: 1px solid var(--window-black);
+      box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 var(--window-dark);
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 26px 34px 44px;
+      font-family: var(--serif);
+    }
+
+    .page.active {
+      display: block;
+      animation: page-in 0.22s ease-out both;
+    }
+
+    @keyframes page-in {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page h1 {
+      margin: 0 0 4px;
+      font: 600 40px/1.05 var(--serif);
+      letter-spacing: 0.2px;
+      color: var(--ink);
+    }
+
+    .page h2 {
+      margin: 0 0 14px;
+      font: 600 26px/1.15 var(--serif);
+      letter-spacing: 0.2px;
+      color: var(--ink);
+    }
+
+    .page h3 {
+      margin: 0 0 12px;
+      font: 600 21px/1.25 var(--serif);
+      color: var(--ink);
+    }
+
+    .page p {
+      margin: 0 0 12px;
+      font: 16px/1.68 var(--serif);
+      color: #222222;
+    }
+
+    .kicker {
+      margin: 0 0 8px;
+      font: 10.5px/1.3 var(--chrome);
+      letter-spacing: 2.6px;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+    }
+
+    .text-block {
+      max-width: 72ch;
+      margin-bottom: 20px;
+    }
+
+    .text-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .home {
+      text-align: center;
+      padding: 18px 0 10px;
+    }
+
+    .avatar {
+      width: 128px;
+      height: 128px;
+      margin: 0 auto 18px;
+      padding: 4px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .home h1 {
+      margin-bottom: 8px;
+      font-size: 46px;
+    }
+
+    .home .role {
+      margin: 0 0 12px;
+      font: 15px/1.5 var(--chrome);
+      letter-spacing: 0.3px;
+      color: #333333;
+    }
+
+    .home .location {
+      margin: 0 0 22px;
+      font: 10.5px/1.4 var(--chrome);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555555;
+    }
+
+    .home-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto 20px;
+      max-width: 680px;
+    }
+
+    .home-note {
+      max-width: 600px;
+      margin: 0 auto;
+      font: italic 14px/1.6 var(--serif);
+      color: #555555;
+    }
+
+    .big-button,
+    .site-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 30px;
+      padding: 6px 12px;
+      background: var(--window);
+      color: var(--ink);
+      border: 2px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 var(--window-light), inset -1px -1px 0 var(--window-dark);
+      font: 11px/1.2 var(--chrome);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .big-button:hover,
+    .site-button:hover {
+      background: var(--content-hover);
+      color: var(--ink);
+    }
+
+    .big-button:active,
+    .site-button:active {
+      border-color: #000000 #ffffff #ffffff #000000;
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+    }
+
+    .site-button.primary {
+      background: linear-gradient(180deg, #0000b8, var(--title-blue));
+      color: #ffffff;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.35), inset -1px -1px 0 #00004d;
+    }
+
+    .site-button.primary:hover {
+      background: linear-gradient(180deg, #1515d0, #0000b8);
+      color: #ffffff;
+    }
+
+    /* ---------- about ---------- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 28px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .facts {
+      margin: 0;
+      padding: 12px 14px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+      font: 12px/1.5 var(--chrome);
+    }
+
+    .facts dt {
+      margin: 10px 0 2px;
+      font-size: 9.5px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #666666;
+    }
+
+    .facts dt:first-child {
+      margin-top: 0;
+    }
+
+    .facts dd {
+      margin: 0;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+
+    .facts dd a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .profile-figure {
+      width: min(100%, 320px);
+      margin: 22px 0 6px;
+      padding: 5px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+    }
+
+    .profile-figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .profile-figure figcaption {
+      padding: 6px 2px 1px;
+      font: 10px/1.45 var(--chrome);
+      color: #555555;
+    }
+
+    /* ---------- education ---------- */
+    .ledger {
+      margin-top: 16px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+    }
+
+    .ledger-row {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 12px;
+      align-items: baseline;
+      padding: 10px 14px;
+      border-bottom: 1px dotted #b0b0b0;
+      font: 13px/1.45 var(--chrome);
+    }
+
+    .ledger-row:last-child {
+      border-bottom: none;
+    }
+
+    .ledger-row .key {
+      font-size: 9.5px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #666666;
+    }
+
+    .ledger-row .value {
+      color: var(--ink);
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 10px 12px;
+      background: #ffffe1;
+      border: 1px solid #c8c8a0;
+      font: 11.5px/1.5 var(--chrome);
+      color: #4d4d4d;
+    }
+
+    /* ---------- projects ---------- */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .project-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 16px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 var(--window-light), inset -1px -1px 0 var(--window-dark);
+      transition: background-color 0.12s ease, transform 0.12s ease;
+    }
+
+    .project-card:hover {
+      background: var(--content-hover);
+      transform: translateY(-1px);
+    }
+
+    .project-icon {
+      width: 64px;
+      height: 64px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      background: var(--content);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+    }
+
+    .project-icon svg {
+      width: 46px;
+      height: 46px;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    .project-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .project-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .project-head h2 {
+      margin: 0;
+      font-size: 25px;
+    }
+
+    .project-index {
+      margin-left: auto;
+      font: 10px/1 var(--chrome);
+      letter-spacing: 2px;
+      color: #666666;
+    }
+
+    .project-main p {
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 0 0 12px;
+      padding: 0;
+      list-style: none;
+      font: 9.5px/1.2 var(--chrome);
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      color: #444444;
+    }
+
+    .tech-list li {
+      padding: 3px 7px;
+      background: var(--content-hover);
+      border: 1px solid var(--window-dark);
+    }
+
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .no-demo {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border: 1px dashed var(--window-dark);
+      color: #666666;
+      font: 9.5px/1.2 var(--chrome);
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    /* ---------- skills ---------- */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .skill-card {
+      padding: 14px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+    }
+
+    .skill-card h3 {
+      margin: 0 0 10px;
+      font: 10.5px/1.3 var(--chrome);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+    }
+
+    .skill-card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font: 13.5px/1.5 var(--serif);
+    }
+
+    .skill-card li {
+      position: relative;
+      padding: 4px 0 4px 17px;
+      border-bottom: 1px dotted #b0b0b0;
+    }
+
+    .skill-card li:last-child {
+      border-bottom: none;
+    }
+
+    .skill-card li::before {
+      content: '▸';
+      position: absolute;
+      left: 2px;
+      top: 4px;
+      color: var(--teal-dark);
+      font-family: var(--chrome);
+    }
+
+    .verified {
+      margin-top: 18px;
+      padding: 14px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+    }
+
+    .verified h3 {
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .verified p {
+      margin-bottom: 10px;
+      font: 12px/1.55 var(--chrome);
+      color: #555555;
+    }
+
+    .tech-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font: 9.5px/1.2 var(--chrome);
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      color: #444444;
+    }
+
+    .tech-cloud li {
+      padding: 3px 7px;
+      background: var(--content-hover);
+      border: 1px solid var(--window-dark);
+    }
+
+    /* ---------- experience ---------- */
+    .experience-list {
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+      max-width: 72ch;
+    }
+
+    .experience-list li {
+      position: relative;
+      padding: 7px 0 7px 20px;
+      font: 14.5px/1.55 var(--serif);
+      border-bottom: 1px dotted #b0b0b0;
+    }
+
+    .experience-list li:last-child {
+      border-bottom: none;
+    }
+
+    .experience-list li::before {
+      content: '■';
+      position: absolute;
+      left: 2px;
+      top: 10px;
+      color: var(--red);
+      font: 9px/1 var(--chrome);
+    }
+
+    /* ---------- contact ---------- */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 640px;
+      margin-top: 18px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      background: var(--content-soft);
+      border: 2px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 var(--window-light), inset -1px -1px 0 var(--window-dark);
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .contact-card:hover {
+      background: var(--content-hover);
+      color: var(--ink);
+    }
+
+    .contact-card:active {
+      border-color: #000000 #ffffff #ffffff #000000;
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+    }
+
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      background: var(--window);
+      border: 2px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      font: bold 13px/1 var(--chrome);
+      color: var(--title-blue);
+    }
+
+    .contact-copy {
+      min-width: 0;
+    }
+
+    .contact-copy strong {
+      display: block;
+      font: 600 16px/1.25 var(--serif);
+      color: var(--ink);
+    }
+
+    .contact-copy span {
+      display: block;
+      margin-top: 2px;
+      font: 11px/1.35 var(--chrome);
+      color: #555555;
+      overflow-wrap: anywhere;
+    }
+
+    /* ---------- footer ---------- */
+    .page-footer {
+      margin-top: 30px;
+      padding: 12px 0 0;
+      border-top: 1px solid #b8b8b8;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: center;
+      font: 10.5px/1.5 var(--chrome);
+      color: #555555;
+    }
+
+    .page-footer a,
+    .footer-link {
+      color: var(--teal-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .page-footer a:hover,
+    .footer-link:hover {
+      color: var(--red);
+    }
+
+    /* ---------- status bar ---------- */
+    .statusbar {
+      height: 22px;
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 3px;
+      background: var(--window);
+      border-top: 1px solid #ffffff;
+      box-shadow: inset 0 1px 0 var(--window-dark);
+      font: 10px/1 var(--chrome);
+      color: #333333;
+    }
+
+    .status-cell {
+      height: 16px;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      border: 1px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-cell.grow {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ---------- taskbar ---------- */
+    .taskbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 32px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 4px;
+      background: var(--taskbar);
+      border-top: 2px solid #ffffff;
+      box-shadow: inset 0 1px 0 var(--window-light);
+    }
+
+    .start-button,
+    .task-button {
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0 8px;
+      background: var(--window);
+      color: #000000;
+      border: 1px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: inset 1px 1px 0 var(--window-light), inset -1px -1px 0 var(--window-dark);
+      font: bold 11px/1 var(--chrome);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .start-button:active,
+    .task-button:active,
+    .task-button[aria-pressed='true'] {
+      border-color: #000000 #ffffff #ffffff #000000;
+      box-shadow: inset 1px 1px 0 var(--window-dark);
+      background: var(--window-light);
+    }
+
+    .start-flag {
+      width: 14px;
+      height: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1px;
+      flex: none;
+    }
+
+    .start-flag span:nth-child(1) { background: #e03b3b; }
+    .start-flag span:nth-child(2) { background: #3b8f3b; }
+    .start-flag span:nth-child(3) { background: #2f5fbf; }
+    .start-flag span:nth-child(4) { background: #d0a300; }
+
+    .task-button {
+      min-width: 160px;
+      max-width: 220px;
+      font-weight: normal;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .task-button .task-dot {
+      width: 9px;
+      height: 9px;
+      flex: none;
+      background: var(--teal-dark);
+      border: 1px solid #000000;
+    }
+
+    .task-button .task-label {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .tray {
+      margin-left: auto;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+      border: 1px solid;
+      border-color: var(--window-dark) #ffffff #ffffff var(--window-dark);
+      font: 10px/1 var(--chrome);
+      white-space: nowrap;
+    }
+
+    .tray .speaker {
+      width: 13px;
+      height: 13px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .tray .speaker::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 5px;
+      height: 5px;
+      background: #333333;
+    }
+
+    .tray .speaker::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 2px;
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-right: 6px solid #333333;
+    }
+
+    .tray .clock {
+      line-height: 1.2;
+      text-align: right;
+    }
+
+    /* ---------- start menu ---------- */
+    .start-menu {
+      position: fixed;
+      left: 4px;
+      bottom: 32px;
+      width: 226px;
+      z-index: 200;
+      display: flex;
+      background: var(--window);
+      border: 2px solid;
+      border-color: #ffffff #000000 #000000 #ffffff;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+      animation: menu-in 0.12s ease-out both;
+    }
+
+    .start-menu[hidden] {
+      display: none;
+    }
+
+    @keyframes menu-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .start-rail {
+      width: 26px;
+      flex: none;
+      padding: 6px 3px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: var(--window-dark);
+      color: #ffffff;
+      font: bold 13px/1 var(--chrome);
+      letter-spacing: 1px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      user-select: none;
+    }
+
+    .start-options {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 3px;
+    }
+
+    .start-option {
+      width: 100%;
+      padding: 8px 10px;
+      background: transparent;
+      border: none;
+      color: var(--ink);
+      font: 12px/1.2 var(--chrome);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .start-option:hover,
+    .start-option:focus-visible {
+      background: var(--title-blue);
+      color: #ffffff;
+      outline: none;
+    }
+
+    .start-separator {
+      height: 1px;
+      margin: 4px 3px;
+      background: var(--window-dark);
+      border-top: 1px solid #ffffff;
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 860px) {
+      .window {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 32px;
+        border-width: 0;
+      }
+
+      .desktop-icons {
+        display: none;
+      }
+
+      .window-body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        max-height: 92px;
+        padding: 7px 8px;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        border-right: none;
+        border-bottom: 1px solid var(--window-dark);
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .brand {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        flex: none;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 15px;
+      }
+
+      .brand p {
+        display: none;
+      }
+
+      .nav {
+        flex-direction: row;
+        gap: 2px;
+        margin-top: 0;
+      }
+
+      .nav-link {
+        width: auto;
+        padding: 5px 6px;
+        font-size: 9px;
+        letter-spacing: 1px;
+        white-space: nowrap;
+      }
+
+      .sidebar-footer {
+        display: none;
+      }
+
+      .page {
+        padding: 18px 16px 34px;
+      }
+
+      .page h1 {
+        font-size: 31px;
+      }
+
+      .home {
+        padding-top: 8px;
+      }
+
+      .home h1 {
+        font-size: 34px;
+      }
+
+      .avatar {
+        width: 96px;
+        height: 96px;
+      }
+
+      .home .role {
+        font-size: 12px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .facts {
+        max-width: 100%;
+      }
+
+      .ledger-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+
+      .project-card {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .project-icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .project-icon svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .project-head h2 {
+        font-size: 22px;
+      }
+
+      .skill-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .statusbar {
+        display: none;
+      }
+
+      .task-button {
+        min-width: 0;
+        flex: 1;
+        max-width: none;
+      }
+
+      .tray {
+        flex: none;
+      }
+
+      .start-menu {
+        width: calc(100% - 8px);
+      }
+    }
+
+    @media (max-width: 460px) {
+      .brand h1 {
+        display: none;
+      }
+
+      .sidebar {
+        max-height: 82px;
+      }
+
+      .nav-link {
+        padding: 4px 5px;
+        font-size: 8px;
+        letter-spacing: 0.6px;
+      }
+
+      .page h1 {
+        font-size: 27px;
+      }
+
+      .home h1 {
+        font-size: 29px;
+      }
+
+      .home .location {
+        letter-spacing: 1.2px;
+      }
+
+      .home-links {
+        gap: 7px;
+      }
+
+      .big-button,
+      .site-button {
+        padding: 6px 9px;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+
+      .tray .speaker {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop" id="desktop">
+    <div class="desktop-icons" aria-label="Desktop shortcuts">
+      <button type="button" class="shortcut" data-page-link="home">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="4" width="26" height="19" fill="#e9e9e9" stroke="#000" stroke-width="2"/>
+          <rect x="6" y="7" width="20" height="13" fill="#3e9697" stroke="#000"/>
+          <rect x="12" y="25" width="8" height="2" fill="#e9e9e9" stroke="#000"/>
+          <rect x="8" y="28" width="16" height="2" fill="#e9e9e9" stroke="#000"/>
+        </svg>
+        <span>My Showcase</span>
+      </button>
+      <button type="button" class="shortcut" data-page-link="about">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="4" y="3" width="24" height="26" fill="#e9e9e9" stroke="#000" stroke-width="2"/>
+          <rect x="8" y="7" width="16" height="18" fill="#fff" stroke="#808080"/>
+          <text x="16" y="21" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#1e6a5f">i</text>
+        </svg>
+        <span>About</span>
+      </button>
+      <button type="button" class="shortcut" data-page-link="projects">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M3 8h10l2 3h14v16H3z" fill="#e9e9e9" stroke="#000" stroke-width="2"/>
+          <path d="M5 13h22v12H5z" fill="#d0a300" stroke="#000"/>
+        </svg>
+        <span>Projects</span>
+      </button>
+      <button type="button" class="shortcut" data-page-link="contact">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="7" width="26" height="18" fill="#e9e9e9" stroke="#000" stroke-width="2"/>
+          <path d="M4 9l12 9 12-9" fill="none" stroke="#000" stroke-width="2"/>
+          <path d="M4 24l8-7M28 24l-8-7" fill="none" stroke="#808080" stroke-width="1"/>
+        </svg>
+        <span>Contact</span>
+      </button>
+      <button type="button" class="shortcut" data-page-link="credits">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="4" y="3" width="24" height="26" fill="#e9e9e9" stroke="#000" stroke-width="2"/>
+          <path d="M16 7l2.6 5.3 5.9.9-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.9z" fill="#d0a300" stroke="#000"/>
+        </svg>
+        <span>Credits</span>
+      </button>
+    </div>
+
+    <main class="window" id="app-window" aria-label="PaulOS portfolio window">
+      <div class="titlebar" id="titlebar">
+        <span class="win-icon" aria-hidden="true">PT</span>
+        <span class="title" id="window-title">Paul Titus.P — Showcase '26</span>
+        <div class="window-controls">
+          <button type="button" class="win-btn" data-window-action="minimize" aria-label="Minimize window" title="Minimize">_</button>
+          <button type="button" class="win-btn" data-window-action="maximize" aria-label="Maximize window" title="Maximize">□</button>
+          <button type="button" class="win-btn close" data-window-action="close" aria-label="Close window" title="Close">✕</button>
+        </div>
+      </div>
+
+      <div class="window-body">
+        <aside class="sidebar" aria-label="Portfolio sections">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true">PT</div>
+            <h1>Paul Titus.P</h1>
+            <p>Showcase '26</p>
+          </div>
+
+          <nav class="nav" aria-label="Portfolio navigation">
+            <button type="button" class="nav-link active" data-page-link="home">Home</button>
+            <button type="button" class="nav-link" data-page-link="about">About</button>
+            <button type="button" class="nav-link" data-page-link="education">Education</button>
+            <button type="button" class="nav-link" data-page-link="projects">Projects</button>
+            <button type="button" class="nav-link" data-page-link="skills">Skills</button>
+            <button type="button" class="nav-link" data-page-link="contact">Contact</button>
+            <button type="button" class="nav-link" data-page-link="credits">Credits</button>
+          </nav>
+
+          <div class="sidebar-footer">
+            <p>Web Developer<br />BCA Student<br />AI-Assisted Developer</p>
+            <p>Electronic City<br />Bengaluru, Karnataka, India</p>
+          </div>
+        </aside>
+
+        <div class="page-area" id="page-area">
+          <section class="page active home" id="home" data-page="home" aria-label="Home">
+            <div class="avatar" role="img" aria-label="Profile image of Paul Titus.P">
+              <img src="assets/profile.jpg" alt="Paul Titus.P" />
+            </div>
+            <h1>Paul Titus.P</h1>
+            <p class="role">Web Developer | BCA Student | AI-Assisted Developer</p>
+            <p class="location">Electronic City, Bengaluru, Karnataka, India</p>
+            <div class="home-links">
+              <button type="button" class="big-button" data-page-link="about">About</button>
+              <button type="button" class="big-button" data-page-link="education">Education</button>
+              <button type="button" class="big-button" data-page-link="projects">Projects</button>
+              <button type="button" class="big-button" data-page-link="skills">Skills</button>
+              <button type="button" class="big-button" data-page-link="contact">Contact</button>
+            </div>
+            <p class="home-note">
+              Independent web projects built through AI-assisted development and vibe coding.
+            </p>
+          </section>
+
+          <section class="page" id="about" data-page="about" aria-label="About">
+            <p class="kicker">About Me</p>
+            <h1>Hello, I'm Paul Titus</h1>
+            <div class="about-grid">
+              <div>
+                <div class="text-block">
+                  <p>
+                    I'm Paul Titus, a BCA student and independent web developer passionate about
+                    building useful web applications through AI-assisted development and vibe coding.
+                  </p>
+                  <p>
+                    I enjoy turning ideas into functional digital products, experimenting with modern
+                    AI development tools, and deploying my projects online.
+                  </p>
+                  <p>
+                    As an independent project builder, I continuously learn, experiment, and improve
+                    my skills by bringing ideas to life.
+                  </p>
+                </div>
+                <figure class="profile-figure">
+                  <img src="assets/profile.jpg" alt="Paul Titus.P's public GitHub avatar" />
+                  <figcaption>
+                    <strong>Figure 1:</strong> Paul Titus.P's public GitHub avatar.
+                    To use a personal photograph, replace os/assets/profile.jpg.
+                  </figcaption>
+                </figure>
+              </div>
+
+              <dl class="facts">
+                <dt>Name</dt>
+                <dd>Paul Titus.P</dd>
+                <dt>Location</dt>
+                <dd>Electronic City, Bengaluru, Karnataka, India</dd>
+                <dt>Email</dt>
+                <dd><a href="mailto:paultitus386@gmail.com">paultitus386@gmail.com</a></dd>
+                <dt>GitHub</dt>
+                <dd><a href="https://github.com/paultitus386-hue" target="_blank" rel="noopener noreferrer">github.com/paultitus386-hue</a></dd>
+                <dt>LinkedIn</dt>
+                <dd><a href="https://www.linkedin.com/in/paul-titus-231228421" target="_blank" rel="noopener noreferrer">linkedin.com/in/paul-titus-231228421</a></dd>
+              </dl>
+            </div>
+          </section>
+
+          <section class="page" id="education" data-page="education" aria-label="Education">
+            <p class="kicker">Education</p>
+            <h1>Baldwin's Methodist College</h1>
+            <p>
+              I am currently studying for a Bachelor of Computer Applications while building and
+              deploying independent web projects alongside my coursework.
+            </p>
+            <div class="ledger" role="table" aria-label="Education record">
+              <div class="ledger-row" role="row">
+                <span class="key" role="rowheader">Institution</span>
+                <span class="value" role="cell">Baldwin's Methodist College</span>
+              </div>
+              <div class="ledger-row" role="row">
+                <span class="key" role="rowheader">Qualification</span>
+                <span class="value" role="cell">Bachelor of Computer Applications (BCA)</span>
+              </div>
+              <div class="ledger-row" role="row">
+                <span class="key" role="rowheader">Current academic year</span>
+                <span class="value" role="cell">Second Year</span>
+              </div>
+              <div class="ledger-row" role="row">
+                <span class="key" role="rowheader">Current semester</span>
+                <span class="value" role="cell">Third Semester</span>
+              </div>
+              <div class="ledger-row" role="row">
+                <span class="key" role="rowheader">Expected graduation</span>
+                <span class="value" role="cell">2028</span>
+              </div>
+            </div>
+            <p class="note">
+              Alongside college, I use independent projects to practise web application development,
+              frontend work, deployment, and responsive interface design.
+            </p>
+          </section>
+
+          <section class="page" id="projects" data-page="projects" aria-label="Projects">
+            <p class="kicker">Selected Work</p>
+            <h1>Projects</h1>
+            <p>
+              Three independent projects I have published on GitHub. Each card links to its live
+              demo and public source code.
+            </p>
+
+            <div class="project-list">
+              <article class="project-card">
+                <div class="project-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48">
+                    <rect x="20" y="4" width="8" height="8" fill="#d0a300"/>
+                    <rect x="20" y="36" width="8" height="8" fill="#d0a300"/>
+                    <rect x="4" y="20" width="8" height="8" fill="#3e9697"/>
+                    <rect x="36" y="20" width="8" height="8" fill="#3e9697"/>
+                    <rect x="10" y="10" width="8" height="8" fill="#3e9697"/>
+                    <rect x="30" y="10" width="8" height="8" fill="#d0a300"/>
+                    <rect x="10" y="30" width="8" height="8" fill="#d0a300"/>
+                    <rect x="30" y="30" width="8" height="8" fill="#3e9697"/>
+                    <rect x="20" y="20" width="8" height="8" fill="#a80000"/>
+                  </svg>
+                </div>
+                <div class="project-main">
+                  <div class="project-head">
+                    <h2>Asterloom</h2>
+                    <span class="project-index">01</span>
+                  </div>
+                  <p>
+                    Asterloom AI is an AI-powered research tool that helps users explore information, create effective prompts using its built-in Prompt Studio, and generate images using AI.
+                  </p>
+                  <ul class="tech-list" aria-label="Technologies used in the Asterloom repository">
+                    <li>TypeScript</li>
+                    <li>React</li>
+                    <li>Vite</li>
+                    <li>Node.js</li>
+                    <li>Tailwind CSS</li>
+                  </ul>
+                  <div class="project-actions">
+                    <a class="site-button primary" href="https://deepseek-wphdnwfj.manus.space/" target="_blank" rel="noopener noreferrer">LIVE DEMO</a>
+                    <a class="site-button" href="https://github.com/paultitus386-hue/Asterloom_toolbox" target="_blank" rel="noopener noreferrer">VIEW SOURCE</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-card">
+                <div class="project-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48">
+                    <rect x="4" y="4" width="40" height="40" fill="#fff" stroke="#000" stroke-width="2"/>
+                    <rect x="9" y="9" width="10" height="10" fill="#000"/>
+                    <rect x="29" y="9" width="10" height="10" fill="#000"/>
+                    <rect x="9" y="29" width="10" height="10" fill="#000"/>
+                    <rect x="23" y="23" width="5" height="5" fill="#000"/>
+                    <rect x="30" y="23" width="4" height="4" fill="#000"/>
+                    <rect x="23" y="30" width="4" height="4" fill="#000"/>
+                    <rect x="30" y="30" width="9" height="9" fill="#000"/>
+                    <rect x="12" y="12" width="4" height="4" fill="#fff"/>
+                    <rect x="32" y="12" width="4" height="4" fill="#fff"/>
+                    <rect x="12" y="32" width="4" height="4" fill="#fff"/>
+                  </svg>
+                </div>
+                <div class="project-main">
+                  <div class="project-head">
+                    <h2>QR Generator</h2>
+                    <span class="project-index">02</span>
+                  </div>
+                  <p>
+                    A QR-code project focused on creating a useful web interface for working with QR codes.
+                  </p>
+                  <ul class="tech-list" aria-label="Technologies used in the QR Generator repository">
+                    <li>JavaScript</li>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>jsQR</li>
+                    <li>QRCode.js</li>
+                  </ul>
+                  <div class="project-actions">
+                    <a class="site-button primary" href="https://glyph-blond-kappa.vercel.app/" target="_blank" rel="noopener noreferrer">LIVE DEMO</a>
+                    <a class="site-button" href="https://github.com/paultitus386-hue/QR-specifiers" target="_blank" rel="noopener noreferrer">VIEW SOURCE</a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-card">
+                <div class="project-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48">
+                    <rect x="4" y="7" width="27" height="19" rx="2" fill="#e9e9e9" stroke="#000" stroke-width="2"/>
+                    <rect x="18" y="22" width="26" height="19" rx="2" fill="#3e9697" stroke="#000" stroke-width="2"/>
+                    <text x="12" y="21" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#1e6a5f">A</text>
+                    <text x="25" y="36" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#fff">文</text>
+                  </svg>
+                </div>
+                <div class="project-main">
+                  <div class="project-head">
+                    <h2>Translator</h2>
+                    <span class="project-index">03</span>
+                  </div>
+                  <p>
+                    An independent translation-focused web application built to explore practical
+                    language tools and user-friendly web experiences.
+                  </p>
+                  <ul class="tech-list" aria-label="Technologies used in the Translator repository">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                    <li>Python</li>
+                    <li>Tailwind CSS</li>
+                  </ul>
+                  <div class="project-actions">
+                    <a class="site-button primary" href="https://translator-tawny-five.vercel.app/" target="_blank" rel="noopener noreferrer">LIVE DEMO</a>
+                    <a class="site-button" href="https://github.com/paultitus386-hue/Converter" target="_blank" rel="noopener noreferrer">VIEW SOURCE</a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page" id="skills" data-page="skills" aria-label="Skills and tools">
+            <p class="kicker">Toolkit</p>
+            <h1>Skills &amp; Tools</h1>
+            <p>
+              My current development approach is AI-assisted and project-led. I learn by building,
+              testing, and deploying ideas rather than by collecting badges.
+            </p>
+
+            <div class="skill-grid">
+              <div class="skill-card">
+                <h3>AI-Assisted Development</h3>
+                <ul>
+                  <li>AI-assisted application development</li>
+                  <li>Vibe coding</li>
+                  <li>Prompt engineering</li>
+                </ul>
+              </div>
+              <div class="skill-card">
+                <h3>Development Tools</h3>
+                <ul>
+                  <li>GitHub</li>
+                  <li>Visual Studio Code</li>
+                  <li>Google AI Studio</li>
+                  <li>Google Antigravity</li>
+                </ul>
+              </div>
+              <div class="skill-card">
+                <h3>Development Interests</h3>
+                <ul>
+                  <li>Web application development</li>
+                  <li>Frontend development</li>
+                  <li>Website deployment</li>
+                  <li>Responsive user interfaces</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="verified">
+              <h3>Technologies used in my projects</h3>
+              <p>
+                These technologies appear in the three repositories above. This is a record of
+                project experience, not a proficiency percentage or a claim of mastery.
+              </p>
+              <ul class="tech-cloud">
+                <li>TypeScript</li>
+                <li>JavaScript</li>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>React</li>
+                <li>Vite</li>
+                <li>Node.js</li>
+                <li>Express</li>
+                <li>Tailwind CSS</li>
+                <li>Python</li>
+                <li>Drizzle ORM</li>
+                <li>jsQR</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="page" id="experience" data-page="experience" aria-label="Independent project development">
+            <p class="kicker">In Practice</p>
+            <h1>Independent project development</h1>
+            <p>
+              I am a college student who builds and deploys independent web projects. This is not a
+              claim of professional employment, an internship, a certification, or client work.
+            </p>
+            <ul class="experience-list">
+              <li>Building and iterating on independent web projects, including Asterloom, QR Generator, and Translator.</li>
+              <li>Using AI-assisted development and vibe coding to turn ideas into working web applications.</li>
+              <li>Publishing source code on GitHub and deploying projects when a live demo is available.</li>
+            </ul>
+          </section>
+
+          <section class="page" id="contact" data-page="contact" aria-label="Contact">
+            <p class="kicker">Say Hello</p>
+            <h1>Contact</h1>
+            <p>
+              I'm open to conversations about web projects, collaboration, and learning. The fastest
+              way to reach me is by email, and my GitHub and LinkedIn profiles are below.
+            </p>
+            <div class="contact-list">
+              <a class="contact-card" href="mailto:paultitus386@gmail.com">
+                <span class="contact-icon" aria-hidden="true">@</span>
+                <span class="contact-copy">
+                  <strong>Email</strong>
+                  <span>paultitus386@gmail.com</span>
+                </span>
+              </a>
+              <a class="contact-card" href="https://github.com/paultitus386-hue" target="_blank" rel="noopener noreferrer">
+                <span class="contact-icon" aria-hidden="true">GH</span>
+                <span class="contact-copy">
+                  <strong>GitHub</strong>
+                  <span>github.com/paultitus386-hue</span>
+                </span>
+              </a>
+              <a class="contact-card" href="https://www.linkedin.com/in/paul-titus-231228421" target="_blank" rel="noopener noreferrer">
+                <span class="contact-icon" aria-hidden="true">in</span>
+                <span class="contact-copy">
+                  <strong>LinkedIn</strong>
+                  <span>linkedin.com/in/paul-titus-231228421</span>
+                </span>
+              </a>
+            </div>
+            <p class="note">
+              This page opens your email client or my public profiles directly. There is no contact
+              form and no message-handling backend.
+            </p>
+            <p>
+              <strong>Location:</strong> Electronic City, Bengaluru, Karnataka, India
+            </p>
+          </section>
+
+          <section class="page" id="credits" data-page="credits" aria-label="Credits">
+            <p class="kicker">Attribution</p>
+            <h1>Credits</h1>
+            <p>
+              The original 3D desk portfolio design and code were created by
+              <a href="https://github.com/henryjeff/portfolio-website" target="_blank" rel="noopener noreferrer">Henry Heffernan</a>
+              and are used under the MIT license. The companion retro-OS project is also available at
+              <a href="https://github.com/henryjeff/portfolio-inner-site" target="_blank" rel="noopener noreferrer">henryjeff/portfolio-inner-site</a>.
+            </p>
+            <p>
+              The original 3D scene, camera choreography, shaders, audio, and BIOS boot sequence are
+              preserved. The personal content, page metadata, contact links, and this local PaulOS
+              showcase have been adapted for Paul Titus.P.
+            </p>
+            <p>
+              No personal photographs, statistics, or project content from the original portfolio are
+              used here. The profile image shown is Paul Titus.P's public GitHub avatar; it can be
+              replaced with a personal photograph at os/assets/profile.jpg.
+            </p>
+            <p>
+              Portfolio content © 2026 Paul Titus.P. The original MIT copyright notice is retained in
+              the repository's LICENSE.md file.
+            </p>
+          </section>
+
+          <footer class="page-footer">
+            <span>© <span id="year">2026</span> Paul Titus.P</span>
+            <span>Original 3D design by Henry Heffernan (MIT)</span>
+            <button type="button" class="footer-link" data-page-link="credits">Credits</button>
+          </footer>
+        </div>
+      </div>
+
+      <div class="statusbar">
+        <span class="status-cell">Ready</span>
+        <span class="status-cell grow" id="status-page">Home</span>
+        <span class="status-cell">PaulOS</span>
+      </div>
+    </main>
+
+    <div class="taskbar" aria-label="Taskbar">
+      <button type="button" class="start-button" id="start-button" aria-expanded="false" aria-controls="start-menu">
+        <span class="start-flag" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        Start
+      </button>
+      <button type="button" class="task-button" id="task-button" aria-pressed="true" aria-label="Show or hide the portfolio window">
+        <span class="task-dot" aria-hidden="true"></span>
+        <span class="task-label">My Showcase</span>
+      </button>
+      <div class="tray">
+        <span class="speaker" aria-hidden="true"></span>
+        <span class="clock" id="clock">--:--</span>
+      </div>
+    </div>
+
+    <div class="start-menu" id="start-menu" hidden>
+      <div class="start-rail">PaulOS</div>
+      <div class="start-options">
+        <button type="button" class="start-option" data-page-link="home">Home</button>
+        <button type="button" class="start-option" data-page-link="about">About</button>
+        <button type="button" class="start-option" data-page-link="education">Education</button>
+        <button type="button" class="start-option" data-page-link="projects">Projects</button>
+        <button type="button" class="start-option" data-page-link="skills">Skills</button>
+        <button type="button" class="start-option" data-page-link="contact">Contact</button>
+        <button type="button" class="start-option" data-page-link="credits">Credits</button>
+        <div class="start-separator" aria-hidden="true"></div>
+        <button type="button" class="start-option" id="restart-option">Restart showcase…</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var appWindow = document.getElementById('app-window');
+      var titlebar = document.getElementById('titlebar');
+      var pageArea = document.getElementById('page-area');
+      var taskButton = document.getElementById('task-button');
+      var startButton = document.getElementById('start-button');
+      var startMenu = document.getElementById('start-menu');
+      var statusPage = document.getElementById('status-page');
+      var clock = document.getElementById('clock');
+      var year = document.getElementById('year');
+      var restartOption = document.getElementById('restart-option');
+      var pages = Array.prototype.slice.call(document.querySelectorAll('.page[data-page]'));
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link[data-page-link]'));
+      var pageLinks = Array.prototype.slice.call(document.querySelectorAll('[data-page-link]'));
+      var pageTitles = {
+        home: 'Home',
+        about: 'About',
+        education: 'Education',
+        projects: 'Projects',
+        skills: 'Skills',
+        experience: 'Experience',
+        contact: 'Contact',
+        credits: 'Credits'
+      };
+
+      /* Keep the original parent/iframe event bridge so the 3D camera can follow
+         pointer and keyboard activity inside the monitor. */
+      function postToParent(message) {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(message, '*');
+        }
+      }
+
+      window.addEventListener('mousemove', function (event) {
+        postToParent({ type: 'mousemove', clientX: event.clientX, clientY: event.clientY });
+      }, { passive: true });
+
+      window.addEventListener('mousedown', function () {
+        postToParent({ type: 'mousedown' });
+      }, { passive: true });
+
+      window.addEventListener('mouseup', function () {
+        postToParent({ type: 'mouseup' });
+      }, { passive: true });
+
+      document.addEventListener('keydown', function (event) {
+        postToParent({ type: 'keydown', key: event.key });
+      });
+
+      document.addEventListener('keyup', function (event) {
+        postToParent({ type: 'keyup', key: event.key });
+      });
+
+      /* Page navigation. Hash links keep browser back/forward working inside
+         the monitor without navigating the parent page. */
+      function pageIdFromHash() {
+        var id = window.location.hash.replace(/^#/, '');
+        return pageTitles[id] ? id : 'home';
+      }
+
+      function setActivePage(id, updateHash) {
+        if (!pageTitles[id]) id = 'home';
+
+        pages.forEach(function (page) {
+          page.classList.toggle('active', page.getAttribute('data-page') === id);
+        });
+
+        navLinks.forEach(function (link) {
+          var active = link.getAttribute('data-page-link') === id;
+          link.classList.toggle('active', active);
+          if (active) {
+            link.setAttribute('aria-current', 'page');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        });
+
+        statusPage.textContent = pageTitles[id];
+        document.title = pageTitles[id] + ' — PaulOS | Paul Titus.P';
+
+        if (updateHash !== false && window.location.hash !== '#' + id) {
+          window.location.hash = id;
+        }
+
+        pageArea.scrollTop = 0;
+        closeStartMenu();
+        showWindow();
+      }
+
+      pageLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          setActivePage(link.getAttribute('data-page-link'));
+        });
+      });
+
+      window.addEventListener('hashchange', function () {
+        setActivePage(pageIdFromHash(), false);
+      });
+
+      /* Window controls. Close and minimize both hide the window; the taskbar
+         button brings it back, just like the original OS window model. */
+      function showWindow() {
+        appWindow.classList.remove('is-hidden');
+        taskButton.setAttribute('aria-pressed', 'true');
+      }
+
+      function hideWindow() {
+        appWindow.classList.add('is-hidden');
+        taskButton.setAttribute('aria-pressed', 'false');
+        closeStartMenu();
+      }
+
+      function toggleWindow() {
+        if (appWindow.classList.contains('is-hidden')) {
+          showWindow();
+        } else {
+          hideWindow();
+        }
+      }
+
+      taskButton.addEventListener('click', toggleWindow);
+
+      Array.prototype.forEach.call(document.querySelectorAll('[data-window-action]'), function (button) {
+        button.addEventListener('click', function () {
+          var action = button.getAttribute('data-window-action');
+          if (action === 'minimize' || action === 'close') {
+            hideWindow();
+          } else if (action === 'maximize') {
+            var maximized = appWindow.classList.toggle('maximized');
+            button.setAttribute('aria-label', maximized ? 'Restore window' : 'Maximize window');
+            button.setAttribute('title', maximized ? 'Restore' : 'Maximize');
+            button.textContent = maximized ? '❐' : '□';
+            appWindow.style.left = '';
+            appWindow.style.top = '';
+            appWindow.style.right = '';
+            appWindow.style.bottom = '';
+            appWindow.style.width = '';
+            appWindow.style.height = '';
+          }
+        });
+      });
+
+      /* Start menu. */
+      function closeStartMenu() {
+        startMenu.hidden = true;
+        startButton.setAttribute('aria-expanded', 'false');
+      }
+
+      function toggleStartMenu() {
+        var willOpen = startMenu.hidden;
+        startMenu.hidden = !willOpen;
+        startButton.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      }
+
+      startButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleStartMenu();
+      });
+
+      startMenu.addEventListener('click', function (event) {
+        event.stopPropagation();
+      });
+
+      document.addEventListener('click', function () {
+        closeStartMenu();
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closeStartMenu();
+        }
+      });
+
+      restartOption.addEventListener('click', function () {
+        window.location.reload();
+      });
+
+      /* Simple window dragging on desktop-sized views. */
+      var drag = null;
+
+      titlebar.addEventListener('pointerdown', function (event) {
+        if (event.target.closest('.win-btn') || window.innerWidth <= 860 || appWindow.classList.contains('maximized')) {
+          return;
+        }
+
+        var rect = appWindow.getBoundingClientRect();
+        drag = {
+          startX: event.clientX,
+          startY: event.clientY,
+          left: rect.left,
+          top: rect.top
+        };
+
+        appWindow.style.right = 'auto';
+        appWindow.style.bottom = 'auto';
+        appWindow.style.left = rect.left + 'px';
+        appWindow.style.top = rect.top + 'px';
+        appWindow.style.width = rect.width + 'px';
+        appWindow.style.height = rect.height + 'px';
+
+        if (titlebar.setPointerCapture) {
+          titlebar.setPointerCapture(event.pointerId);
+        }
+        event.preventDefault();
+      });
+
+      titlebar.addEventListener('pointermove', function (event) {
+        if (!drag) return;
+
+        var maxLeft = Math.max(0, window.innerWidth - 160);
+        var maxTop = Math.max(0, window.innerHeight - 80);
+        var left = Math.min(maxLeft, Math.max(0, drag.left + event.clientX - drag.startX));
+        var top = Math.min(maxTop, Math.max(0, drag.top + event.clientY - drag.startY));
+
+        appWindow.style.left = left + 'px';
+        appWindow.style.top = top + 'px';
+      });
+
+      function endDrag() {
+        drag = null;
+      }
+
+      titlebar.addEventListener('pointerup', endDrag);
+      titlebar.addEventListener('pointercancel', endDrag);
+
+      /* Taskbar clock. */
+      function updateClock() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var suffix = hours >= 12 ? 'PM' : 'AM';
+        var displayHours = hours % 12 || 12;
+        clock.textContent = displayHours + ':' + minutes + ' ' + suffix;
+      }
+
+      updateClock();
+      window.setInterval(updateClock, 1000);
+
+      if (year) {
+        year.textContent = String(new Date().getFullYear());
+      }
+
+      /* Initial page from the URL hash, or Home. */
+      setActivePage(pageIdFromHash(), false);
+    })();
+  </script>
+</body>
+</html>
